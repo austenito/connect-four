@@ -5,9 +5,26 @@
   <script type="text/javascript">
 		$(document).ready(function() {
       var drawingCanvas = $('#board').get(0);
-      alert(drawingCanvas.getContext);
       if(drawingCanvas.getContext) {
         var context = drawingCanvas.getContext('2d');
+
+        var cell_size = 100;
+        var origin_x = 10;
+        var origin_y = 10;
+        for (var row = 0; row < 6; row++) {
+          var start_x = origin_x;
+          var start_y = origin_y;
+
+          for (var column = 0; column < 7; column++) {
+            context.fillStyle = "rgb(150,29,28)";
+            context.fillRect (start_x, start_y, cell_size, cell_size);
+            context.strokeStyle = "black";
+            context.strokeRect (start_x, start_y, cell_size, cell_size);
+
+            start_x += cell_size;
+          }
+          origin_y += cell_size;
+        }
       }
     });
 	</script>
