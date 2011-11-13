@@ -1,16 +1,15 @@
 <html>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <script src="./js/jquery-1.7.js" type="text/javascript"></script>
+  <script src="./js/connect_four.js" type="text/javascript"></script>
 
   <script type="text/javascript">
 		$(document).ready(function() {
       var drawingCanvas = $('#board').get(0);
       if(drawingCanvas.getContext) {
         var context = drawingCanvas.getContext('2d');
-        var board_pieces = [];
-        var players = [0 ,1];
+        var connect_four = new ConnectFour();
         var player_color = ['yellow', 'red'];
-        var active_player = players[0];
 
         // Setup the connect four board
         var cell_size = 100;
@@ -20,7 +19,6 @@
           var start_x = origin_x;
           var start_y = origin_y;
           var row_pieces = [];
-          board_pieces[row] = row_pieces;
 
           for (var column = 0; column < 7; column++) {
             context.fillStyle = "white";
@@ -38,10 +36,10 @@
           var y = e.pageY;
           var row = Math.floor(y / cell_size);
           var column = Math.floor(x / cell_size);
-          
-          var current_row_pieces = board_pieces[row];
-          var board_piece = current_row_pieces[column];
-          if (!board_piece) {
+         
+          connect_four.is_winning_move(1, 1);
+
+          if (!connect_four.has_piece(row, column)) {
             var cell_center = cell_size / 2;
             var circle_x = ((column * cell_size) + origin_x) + cell_center;
             var circle_y = ((row * cell_size) + origin_x) + cell_center
@@ -51,21 +49,17 @@ console.log("mouse: " + x + ", " + y + ", row, column: " + row + ", " + column
 +", translated:" + circle_x+ ", " + circle_y);
 */
             context.strokeStyle = 'black';
-            context.fillStyle = player_color[active_player];
+            context.fillStyle = player_color[connect_four.get_active_player()];
             context.beginPath();
             context.arc(circle_x, circle_y, 40,0, Math.PI*2, true);
             context.closePath();
             context.stroke();
             context.fill();
 
-            current_row_pieces[column] = active_player;
-
-            if (active_player === players[0]) {
-              active_player = players[1];
-            }
-            else {
-              active_player = players[0];
-            }
+            connect_four.add_piece(row, column);
+          }
+          else {
+            console.log('piece exists');
           }
         });
       };
