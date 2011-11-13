@@ -1,0 +1,21 @@
+<html>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script src="./js/jquery-1.7.js" type="text/javascript"></script>
+
+  <script type="text/javascript">
+		$(document).ready(function() {
+      var drawingCanvas = $('#board').get(0);
+      alert(drawingCanvas.getContext);
+      if(drawingCanvas.getContext) {
+        var context = drawingCanvas.getContext('2d');
+      }
+    });
+	</script>
+
+  <body>
+    <canvas id="board" width="800" height="800">
+    <p>Your browser doesn't support canvas.</p>
+    </canvas>
+  </body>
+</html>
+
