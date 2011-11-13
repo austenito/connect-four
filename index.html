@@ -42,10 +42,6 @@
             var circle_x = ((column * cell_size) + origin_x) + cell_center;
             var circle_y = ((row * cell_size) + origin_x) + cell_center
 
-/*
-console.log("mouse: " + x + ", " + y + ", row, column: " + row + ", " + column
-+", translated:" + circle_x+ ", " + circle_y);
-*/
             context.strokeStyle = 'black';
             context.fillStyle = player_color[connect_four.get_active_player()];
             context.beginPath();
@@ -63,9 +59,6 @@ console.log("mouse: " + x + ", " + y + ", row, column: " + row + ", " + column
             else {
               connect_four.change_turn();
             }
-          }
-          else {
-            console.log('piece exists');
           }
         });
       };

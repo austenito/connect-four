@@ -48,8 +48,6 @@ ConnectFour.prototype = {
     connect_matrix['left'] = [];
     connect_matrix['up_left'] = [];
 
-    console.log("checking: " + row + ", " + column);
-
     for (var i = 1; i < 4; i++) {
       connect_matrix['up'].push([column, row - i]);
       connect_matrix['up_right'].push([column + i, row - i]);
@@ -64,7 +62,6 @@ ConnectFour.prototype = {
     for (var matrix_key in connect_matrix) {
       var cells = connect_matrix[matrix_key];
       
-      console.log(matrix_key);
       for (var i = 0; i < 3; i++) {
         var cell = cells[i];
         var column = cell[0];
@@ -72,7 +69,7 @@ ConnectFour.prototype = {
         var pieces = this.get_pieces(row);
         var piece = pieces[column];
 
-        console.log("player(" + player + "): " + row + ", " + column + ": " + piece);
+        //console.log("player(" + player + "): " + row + ", " + column + ": " + piece);
         if(!this.has_piece(row, column) || piece !== player || row < 0 
           || column < 0 ) {
           break;
@@ -81,7 +78,6 @@ ConnectFour.prototype = {
           return true;
         }
       }
-      console.log('====');
     }
     return false;
   },
