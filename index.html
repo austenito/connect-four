@@ -4,20 +4,22 @@
 
   <script type="text/javascript">
 		$(document).ready(function() {
-      // Setup the connect four board
       var drawingCanvas = $('#board').get(0);
       if(drawingCanvas.getContext) {
         var context = drawingCanvas.getContext('2d');
+        var board_pieces = [];
 
+        // Setup the connect four board
         var cell_size = 100;
         var origin_x = 10;
         var origin_y = 10;
         for (var row = 0; row < 6; row++) {
           var start_x = origin_x;
           var start_y = origin_y;
+          var row_pieces = [];
+          board_pieces[row] = row_pieces;
 
           for (var column = 0; column < 7; column++) {
-            //context.fillStyle = "rgb(150,29,28)";
             context.fillStyle = "white";
             context.fillRect (start_x, start_y, cell_size, cell_size);
             context.strokeStyle = "black";
@@ -33,19 +35,28 @@
           var y = e.pageY;
           var row = Math.floor(y / cell_size);
           var column = Math.floor(x / cell_size);
-          var cell_center = cell_size / 2;
-          var circle_x = ((column * cell_size) + origin_x) + cell_center;
-          var circle_y = ((row * cell_size) + origin_x) + cell_center
+          
+          var current_row_pieces = board_pieces[row];
+          var board_piece = current_row_pieces[column];
+          if (!board_piece) {
+            var cell_center = cell_size / 2;
+            var circle_x = ((column * cell_size) + origin_x) + cell_center;
+            var circle_y = ((row * cell_size) + origin_x) + cell_center
 
+/*
 console.log("mouse: " + x + ", " + y + ", row, column: " + row + ", " + column
 +", translated:" + circle_x+ ", " + circle_y);
-          context.strokeStyle = 'black';
-          context.fillStyle = 'yellow';
-          context.beginPath();
-          context.arc(circle_x, circle_y, 40,0, Math.PI*2, true);
-          context.closePath();
-          context.stroke();
-          context.fill();
+*/
+            context.strokeStyle = 'black';
+            context.fillStyle = 'yellow';
+            context.beginPath();
+            context.arc(circle_x, circle_y, 40,0, Math.PI*2, true);
+            context.closePath();
+            context.stroke();
+            context.fill();
+
+            current_row_pieces[column] = 'added';
+          }
         });
       };
     });
