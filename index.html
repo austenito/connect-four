@@ -36,8 +36,6 @@
           var y = e.pageY;
           var row = Math.floor(y / cell_size);
           var column = Math.floor(x / cell_size);
-         
-          connect_four.is_winning_move(1, 1);
 
           if (!connect_four.has_piece(row, column)) {
             var cell_center = cell_size / 2;
@@ -57,6 +55,14 @@ console.log("mouse: " + x + ", " + y + ", row, column: " + row + ", " + column
             context.fill();
 
             connect_four.add_piece(row, column);
+            
+            if (connect_four.is_winning_move(row, column,
+              connect_four.get_active_player())) {
+              console.log('wins');
+            }
+            else {
+              connect_four.change_turn();
+            }
           }
           else {
             console.log('piece exists');
