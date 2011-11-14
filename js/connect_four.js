@@ -24,14 +24,16 @@ ConnectFour.prototype = {
   },
 
   can_add_piece: function(column) {
-    var count = 0;
-    for (var i = 0; i < 6; i++) {
-      if (this.has_piece(i, column)) {
-        count++;
+    if(column < 7) {
+      var count = 0;
+      for (var i = 0; i < 6; i++) {
+        if (this.has_piece(i, column)) {
+          count++;
+        }
       }
-    }
-    if (count < 6) {
-      return true;
+      if (count < 6) {
+        return true;
+      }
     }
     return false;
   },
