@@ -2,6 +2,7 @@ var ConnectFour = function (){
   this.board_pieces = [];
   this.players = [0 ,1];
   this.active_player = this.players[0];
+  this.is_game_done = false;
 }
 
 ConnectFour.prototype = {
@@ -75,7 +76,7 @@ ConnectFour.prototype = {
           break;
         }
         else if(i === 2) {
-          return true;
+          return cells;
         }
       }
     }
@@ -84,6 +85,21 @@ ConnectFour.prototype = {
 
   get_active_player: function() {
     return this.active_player;
+  },
+
+  set_winner: function(player) {
+    this.winner = player;
+  },
+
+  get_winner: function() {
+    return this.winner;
+  },
+
+  has_winner: function() {
+    if (this.winner == null || this.winner === 'undefined') {
+      return false;
+    }
+    return true;
   }
 };
 
