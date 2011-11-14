@@ -4,6 +4,13 @@
   <script src="./js/connect_four.js" type="text/javascript"></script>
 
   <script type="text/javascript">
+    var cell_size = 100;
+    var cell_center = cell_size / 2;
+    var origin_x = 10;
+    var origin_y = 10;
+    var circle_animated_y_pos = 0;
+    var animation_id;
+
 		$(document).ready(function() {
       var drawingCanvas = $('#board').get(0);
       if(drawingCanvas.getContext) {
@@ -12,9 +19,6 @@
         var player_color = ['yellow', 'red'];
 
         // Setup the connect four board
-        var cell_size = 100;
-        var origin_x = 10;
-        var origin_y = 10;
         for (var row = 0; row < 6; row++) {
           var start_x = origin_x;
           var start_y = origin_y;
@@ -39,6 +43,9 @@
 
             if(connect_four.can_add_piece(column)) {
               var row = connect_four.get_next_piece_row(column);
+
+              /*
+              var row = connect_four.get_next_piece_row(column);
               var cell_center = cell_size / 2;
               var circle_x = ((column * cell_size) + origin_x) + cell_center;
               var circle_y = ((row * cell_size) + origin_x) + cell_center
@@ -52,8 +59,18 @@
               context.fill();
 
               connect_four.add_piece(column);
+              */
 
-              var active_player = connect_four.get_active_player();
+          var cell_center = cell_size / 2;
+          x_position = ((column * cell_size) + origin_x) + cell_center
+          var color = player_color[connect_four.get_active_player()];
+//          var circle_x = ((column * cell_size) + origin_x) + cell_center;
+          var end_y_pos = ((row * cell_size) + origin_x) + cell_center
+          animation_id = setInterval(function() { draw_piece(context, color, x_position,
+              end_y_pos) },
+              10);
+              connect_four.add_piece(column);
+var active_player = connect_four.get_active_player();
               var winning_moves = connect_four.is_winning_move(row, column,
                   active_player);
               if (winning_moves) {
@@ -73,16 +90,52 @@
               else {
                 connect_four.change_turn();
               }
-          }
+            }
           }
         });
       };
     });
+
+    function draw_piece(board_context, color, x_pos, end_y_pos) {
+      var piece_canvas = $('#animate_board').get(0);
+      var piece_context = piece_canvas.getContext('2d');
+      piece_canvas.setAttribute('width', 800);
+
+      piece_context.arc(x_pos, circle_animated_y_pos, 40,0, Math.PI*2, true);
+      piece_context.strokeStyle = 'black';
+      piece_context.fillStyle = color;
+      piece_context.beginPath();
+      piece_context.arc(x_pos, circle_animated_y_pos, 40,0, Math.PI*2, true);
+      piece_context.closePath();
+      piece_context.stroke();
+      piece_context.fill();
+
+      circle_animated_y_pos += 10;
+
+      if(end_y_pos === circle_animated_y_pos) {
+        board_context.strokeStyle = 'black';
+        board_context.fillStyle = color;
+        board_context.beginPath();
+        board_context.arc(x_pos, circle_animated_y_pos, 40,0, Math.PI*2, true);
+        board_context.closePath();
+        board_context.stroke();
+        board_context.fill();
+
+        clearInterval(animation_id);
+        circle_animated_y_pos = 0;
+        piece_canvas.setAttribute('width', 800);
+      }
+    }
 	</script>
 
   <body>
-    <canvas id="board" width="800" height="800">
+    <canvas id="board" width="800" height="800"
+    style="position: absolute; left: 0; top: 0; z-index: 1;">
     <p>Your browser doesn't support canvas.</p>
+    </canvas>
+
+    <canvas id="animate_board" width="800" height="800"
+    style="position: absolute; left: 0; top: 0; z-index: 1;">
     </canvas>
   </body>
 </html>
