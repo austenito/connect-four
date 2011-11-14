@@ -10,12 +10,12 @@
     var origin_y = 10;
     var circle_animated_y_pos = 0;
     var animation_id = null;
+    var connect_four = new ConnectFour();
 
 		$(document).ready(function() {
       var drawingCanvas = $('#board').get(0);
       if(drawingCanvas.getContext) {
         var context = drawingCanvas.getContext('2d');
-        var connect_four = new ConnectFour();
         var player_color = ['yellow', 'red'];
 
         // Setup the connect four board
@@ -46,40 +46,22 @@
               x_position = ((column * cell_size) + origin_x) + cell_center
               var color = player_color[connect_four.get_active_player()];
               var end_y_pos = ((row * cell_size) + origin_x) + cell_center
-              animation_id = setInterval(function() { draw_piece(context, color, x_position,
-                  end_y_pos) }, 10);
+
+              animation_id = setInterval(function() { draw_piece(context, color, 
+                  row, column) }, 5);
               connect_four.add_piece(column);
-
-              var active_player = connect_four.get_active_player();
-              var winning_moves = connect_four.is_winning_move(row, column,
-                  active_player);
-              if (winning_moves) {
-                connect_four.set_winner(active_player);
-                console.log('wins');
-
-                var end_cell= winning_moves[winning_moves.length - 1];
-                var end_x = end_cell[0] * cell_size + origin_x + cell_center;
-                var end_y= end_cell[1] * cell_size + origin_x + cell_center;
-                var start_x = column * cell_size + origin_x + cell_center;
-                var start_y = row * cell_size + origin_x + cell_center;
-
-                context.moveTo(start_x, start_y);
-                context.lineTo(end_x, end_y);
-                context.stroke();
-              }
-              else {
-                connect_four.change_turn();
-              }
             }
           }
         });
       };
     });
 
-    function draw_piece(board_context, color, x_pos, end_y_pos) {
+    function draw_piece(board_context, color, row, column) {
       var piece_canvas = $('#animate_board').get(0);
       var piece_context = piece_canvas.getContext('2d');
       piece_canvas.setAttribute('width', 800);
+
+      var x_pos = ((column * cell_size) + origin_x) + cell_center
 
       piece_context.arc(x_pos, circle_animated_y_pos, 40,0, Math.PI*2, true);
       piece_context.strokeStyle = 'black';
@@ -92,6 +74,7 @@
 
       circle_animated_y_pos += 10;
 
+      var end_y_pos = ((row * cell_size) + origin_x) + cell_center
       if(end_y_pos === circle_animated_y_pos) {
         board_context.strokeStyle = 'black';
         board_context.fillStyle = color;
@@ -105,6 +88,30 @@
         circle_animated_y_pos = 0;
         piece_canvas.setAttribute('width', 800);
         animation_id = null;
+
+        draw_winning_line(board_context, row, column);
+      }
+    }
+
+    function draw_winning_line(context, row, column){
+      var active_player = connect_four.get_active_player();
+      var winning_moves = connect_four.is_winning_move(row, column,
+          active_player);
+      if (winning_moves) {
+        connect_four.set_winner(active_player);
+
+        var end_cell= winning_moves[winning_moves.length - 1];
+        var end_x = end_cell[0] * cell_size + origin_x + cell_center;
+        var end_y= end_cell[1] * cell_size + origin_x + cell_center;
+        var start_x = column * cell_size + origin_x + cell_center;
+        var start_y = row * cell_size + origin_x + cell_center;
+
+        context.moveTo(start_x, start_y);
+        context.lineTo(end_x, end_y);
+        context.stroke();
+      }
+      else {
+        connect_four.change_turn();
       }
     }
 	</script>
