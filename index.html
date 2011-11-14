@@ -35,10 +35,12 @@
           if(!connect_four.has_winner()) {
           var x = e.pageX;
           var y = e.pageY;
-          var row = Math.floor(y / cell_size);
+          //var row = Math.floor(y / cell_size);
           var column = Math.floor(x / cell_size);
 
-          if (!connect_four.has_piece(row, column)) {
+          //if (!connect_four.has_piece(row, column)) {
+            if(connect_four.can_add_piece(column)) {
+              var row = connect_four.get_next_piece_row(column);
             var cell_center = cell_size / 2;
             var circle_x = ((column * cell_size) + origin_x) + cell_center;
             var circle_y = ((row * cell_size) + origin_x) + cell_center
@@ -51,7 +53,7 @@
             context.stroke();
             context.fill();
 
-            connect_four.add_piece(row, column);
+            connect_four.add_piece(column);
             
             var active_player = connect_four.get_active_player();
             var winning_moves = connect_four.is_winning_move(row, column,

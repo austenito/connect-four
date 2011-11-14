@@ -6,27 +6,53 @@ var ConnectFour = function (){
 }
 
 ConnectFour.prototype = {
-  get_pieces: function (row) {
-    var current_row_pieces = this.board_pieces[row];
-    if (!current_row_pieces) {
+  get_pieces: function (column) {
+    var column_pieces = this.board_pieces[column];
+    if (!column_pieces) {
       return [];
     }
-    return current_row_pieces;
+    return column_pieces;
   },
 
   has_piece: function(row, column) {
-    var pieces = this.get_pieces(row);
-    var piece = pieces[column];
+    var pieces = this.get_pieces(column);
+    var piece = pieces[row];
     if (piece == null || piece === 'undefined') {
       return false;
     }
     return true;
   },
 
-  add_piece: function(row, column) {
-     var pieces = this.get_pieces(row);
-     pieces[column] = this.active_player;
-     this.board_pieces[row] = pieces;
+  can_add_piece: function(column) {
+    var count = 0;
+    for (var i = 0; i < 6; i++) {
+      if (this.has_piece(i, column)) {
+        count++;
+      }
+    }
+    if (count < 6) {
+      return true;
+    }
+    return false;
+  },
+
+  get_next_piece_row: function(column) {
+     var pieces = this.get_pieces(column);
+     for (var i = 5; i >= 0; i--) {
+       if (!this.has_piece(i, column)) {
+         return i;
+       }
+     }
+     return -1;
+  },
+
+  add_piece: function(column) {
+     var pieces = this.get_pieces(column);
+     if(this.can_add_piece(column)) {
+       var row = this.get_next_piece_row(column);
+       pieces[row] = this.active_player;
+       this.board_pieces[column] = pieces;
+     }
   },
 
   change_turn: function() {
@@ -67,8 +93,8 @@ ConnectFour.prototype = {
         var cell = cells[i];
         var column = cell[0];
         var row = cell[1];
-        var pieces = this.get_pieces(row);
-        var piece = pieces[column];
+        var pieces = this.get_pieces(column);
+        var piece = pieces[row];
 
         //console.log("player(" + player + "): " + row + ", " + column + ": " + piece);
         if(!this.has_piece(row, column) || piece !== player || row < 0 
