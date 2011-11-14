@@ -35,46 +35,44 @@
           if(!connect_four.has_winner()) {
           var x = e.pageX;
           var y = e.pageY;
-          //var row = Math.floor(y / cell_size);
           var column = Math.floor(x / cell_size);
 
-          //if (!connect_four.has_piece(row, column)) {
             if(connect_four.can_add_piece(column)) {
               var row = connect_four.get_next_piece_row(column);
-            var cell_center = cell_size / 2;
-            var circle_x = ((column * cell_size) + origin_x) + cell_center;
-            var circle_y = ((row * cell_size) + origin_x) + cell_center
+              var cell_center = cell_size / 2;
+              var circle_x = ((column * cell_size) + origin_x) + cell_center;
+              var circle_y = ((row * cell_size) + origin_x) + cell_center
 
-            context.strokeStyle = 'black';
-            context.fillStyle = player_color[connect_four.get_active_player()];
-            context.beginPath();
-            context.arc(circle_x, circle_y, 40,0, Math.PI*2, true);
-            context.closePath();
-            context.stroke();
-            context.fill();
-
-            connect_four.add_piece(column);
-            
-            var active_player = connect_four.get_active_player();
-            var winning_moves = connect_four.is_winning_move(row, column,
-            active_player);
-            if (winning_moves) {
-              connect_four.set_winner(active_player);
-              console.log('wins');
-
-              var end_cell= winning_moves[winning_moves.length - 1];
-              var end_x = end_cell[0] * cell_size + origin_x + cell_center;
-              var end_y= end_cell[1] * cell_size + origin_x + cell_center;
-              var start_x = column * cell_size + origin_x + cell_center;
-              var start_y = row * cell_size + origin_x + cell_center;
-
-              context.moveTo(start_x, start_y);
-              context.lineTo(end_x, end_y);
+              context.strokeStyle = 'black';
+              context.fillStyle = player_color[connect_four.get_active_player()];
+              context.beginPath();
+              context.arc(circle_x, circle_y, 40,0, Math.PI*2, true);
+              context.closePath();
               context.stroke();
-            }
-            else {
-              connect_four.change_turn();
-            }
+              context.fill();
+
+              connect_four.add_piece(column);
+
+              var active_player = connect_four.get_active_player();
+              var winning_moves = connect_four.is_winning_move(row, column,
+                  active_player);
+              if (winning_moves) {
+                connect_four.set_winner(active_player);
+                console.log('wins');
+
+                var end_cell= winning_moves[winning_moves.length - 1];
+                var end_x = end_cell[0] * cell_size + origin_x + cell_center;
+                var end_y= end_cell[1] * cell_size + origin_x + cell_center;
+                var start_x = column * cell_size + origin_x + cell_center;
+                var start_y = row * cell_size + origin_x + cell_center;
+
+                context.moveTo(start_x, start_y);
+                context.lineTo(end_x, end_y);
+                context.stroke();
+              }
+              else {
+                connect_four.change_turn();
+              }
           }
           }
         });
