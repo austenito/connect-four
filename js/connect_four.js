@@ -68,30 +68,35 @@ ConnectFour.prototype = {
 
   is_winning_move:  function(row, column, player) {
     var connect_matrix = [];
-    connect_matrix['up'] = [];
-    connect_matrix['up_right'] = [];
-    connect_matrix['right'] = [];
-    connect_matrix['down_right'] = [];
-    connect_matrix['down'] = [];
-    connect_matrix['down_left'] = [];
-    connect_matrix['left'] = [];
-    connect_matrix['up_left'] = [];
 
-    for (var i = 1; i < 4; i++) {
-      connect_matrix['up'].push([column, row - i]);
-      connect_matrix['up_right'].push([column + i, row - i]);
-      connect_matrix['right'].push([column + i, row]);
-      connect_matrix['down_right'].push([column + i, row + i]);
-      connect_matrix['down'].push([column, row + i]);
-      connect_matrix['down_left'].push([column - i, row + i]);
-      connect_matrix['left'].push([column - i, row]);
-      connect_matrix['up_left'].push([column - i, row - i]);
+    for (var row = 0; row < 6; row++) {
+      for (var column = 0; column < 7; column++) {
+        connect_matrix['up:' + row + ':' + column] = [];
+        connect_matrix['up_right:' + row + ':' + column] = [];
+        connect_matrix['right:' + row + ':' + column] = [];
+        connect_matrix['down_right:' + row + ':' + column] = [];
+        connect_matrix['down:' + row + ':' + column] = [];
+        connect_matrix['down_left:' + row + ':' + column] = [];
+        connect_matrix['left:' + row + ':' + column] = [];
+        connect_matrix['up_left:' + row + ':' + column] = [];
+
+        for (var i = 0; i < 4; i++) {
+          connect_matrix['up:' + row + ':' + column].push([column, row - i]);
+          connect_matrix['up_right:' + row + ':' + column].push([column + i, row - i]);
+          connect_matrix['right:' + row + ':' + column].push([column + i, row]);
+          connect_matrix['down_right:' + row + ':' + column].push([column + i, row + i]);
+          connect_matrix['down:' + row + ':' + column].push([column, row + i]);
+          connect_matrix['down_left:' + row + ':' + column].push([column - i, row + i]);
+          connect_matrix['left:' + row + ':' + column].push([column - i, row]);
+          connect_matrix['up_left:' + row + ':' + column].push([column - i, row - i]);
+        }
+      }
     }
 
     for (var matrix_key in connect_matrix) {
       var cells = connect_matrix[matrix_key];
       
-      for (var i = 0; i < 3; i++) {
+      for (var i = 0; i < 4; i++) {
         var cell = cells[i];
         var column = cell[0];
         var row = cell[1];
@@ -102,7 +107,7 @@ ConnectFour.prototype = {
           || column < 0 ) {
           break;
         }
-        else if(i === 2) {
+        else if(i === 3) {
           return cells;
         }
       }
