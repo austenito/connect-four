@@ -9,7 +9,7 @@
     var origin_x = 10;
     var origin_y = 10;
     var circle_animated_y_pos = 0;
-    var animation_id;
+    var animation_id = null;
 
 		$(document).ready(function() {
       var drawingCanvas = $('#board').get(0);
@@ -41,36 +41,16 @@
           var y = e.pageY;
           var column = Math.floor(x / cell_size);
 
-            if(connect_four.can_add_piece(column)) {
+            if(animation_id === null && connect_four.can_add_piece(column)) {
               var row = connect_four.get_next_piece_row(column);
-
-              /*
-              var row = connect_four.get_next_piece_row(column);
-              var cell_center = cell_size / 2;
-              var circle_x = ((column * cell_size) + origin_x) + cell_center;
-              var circle_y = ((row * cell_size) + origin_x) + cell_center
-
-              context.strokeStyle = 'black';
-              context.fillStyle = player_color[connect_four.get_active_player()];
-              context.beginPath();
-              context.arc(circle_x, circle_y, 40,0, Math.PI*2, true);
-              context.closePath();
-              context.stroke();
-              context.fill();
-
+              x_position = ((column * cell_size) + origin_x) + cell_center
+              var color = player_color[connect_four.get_active_player()];
+              var end_y_pos = ((row * cell_size) + origin_x) + cell_center
+              animation_id = setInterval(function() { draw_piece(context, color, x_position,
+                  end_y_pos) }, 10);
               connect_four.add_piece(column);
-              */
 
-          var cell_center = cell_size / 2;
-          x_position = ((column * cell_size) + origin_x) + cell_center
-          var color = player_color[connect_four.get_active_player()];
-//          var circle_x = ((column * cell_size) + origin_x) + cell_center;
-          var end_y_pos = ((row * cell_size) + origin_x) + cell_center
-          animation_id = setInterval(function() { draw_piece(context, color, x_position,
-              end_y_pos) },
-              10);
-              connect_four.add_piece(column);
-var active_player = connect_four.get_active_player();
+              var active_player = connect_four.get_active_player();
               var winning_moves = connect_four.is_winning_move(row, column,
                   active_player);
               if (winning_moves) {
@@ -124,6 +104,7 @@ var active_player = connect_four.get_active_player();
         clearInterval(animation_id);
         circle_animated_y_pos = 0;
         piece_canvas.setAttribute('width', 800);
+        animation_id = null;
       }
     }
 	</script>
