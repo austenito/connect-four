@@ -98,7 +98,6 @@ ConnectFour.prototype = {
         var pieces = this.get_pieces(column);
         var piece = pieces[row];
 
-        //console.log("player(" + player + "): " + row + ", " + column + ": " + piece);
         if(!this.has_piece(row, column) || piece !== player || row < 0 
           || column < 0 ) {
           break;
